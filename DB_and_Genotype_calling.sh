@@ -5,7 +5,7 @@
 #SBATCH --nodes=1 		#number of nodes/CPU
 #SBATCH --ntasks=1		#how many tasks to run simutanously
 #SBATCH --time=3:00:00		#how long the job will go for
-#SBATCH --mem=1G		#how much memory
+#SBATCH --mem=4G		#how much memory
 
 ## Set up job environment
 set -o errexit 			# Exit script on any error
@@ -35,8 +35,11 @@ gatk GenomicsDBImport -V gvcf.list \
 gatk GenotypeGVCFs -R ../Orosv1mt.fasta \
 -V gendb://${FILENAME}_DB -O ${FILENAME}.vcf.gz
 
-## Message that you are done with the job
-echo "Finished running jobs"
+##Access to PCA program SMART PCA
+export PATH="/projects/ec432/bios_in5410/sbatch_intro/SNP_calling/script/:$PATH"
 
+##Run PCA program SMART PCA
+Run_PCA ${FILENAME}.vcf.gz
 
-
+## Message that you are done with the job 
+echo "Finished running jobs" 
